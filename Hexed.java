@@ -102,14 +102,13 @@ class State {
 						}
 					}					
 
-
 					// Check diagonal right up.
 					if (x > 0 && y < 8) {
 						int rowDiagonalRightUp = x;
 						int colDiagonalRightUp = y;
 						int diagonalRightUpOpponent = 0;
 
-						while (colDiagonalRightUp <= 7 && rowDiagonalRightUp >= 0) {
+						while (colDiagonalRightUp <= 8 && rowDiagonalRightUp >= 0) {
 							if (colDiagonalRightUp % 2 == 0) {
 								rowDiagonalRightUp = rowDiagonalRightUp - 1;
 								colDiagonalRightUp = colDiagonalRightUp + 1;
@@ -117,25 +116,29 @@ class State {
 								colDiagonalRightUp = colDiagonalRightUp + 1;
 							}
 
-							if (this.board[rowDiagonalRightUp][colDiagonalRightUp] == currentPlayer) {
-								break;
-							}
-
-							if (this.board[rowDiagonalRightUp][colDiagonalRightUp] != opponent) {
-								if (diagonalRightUpOpponent > 0) {
-									validMoveLocations.add(new Location(rowDiagonalRightUp, colDiagonalRightUp));
+							if (colDiagonalRightUp <= 8 && rowDiagonalRightUp >= 0) {
+								if (this.board[rowDiagonalRightUp][colDiagonalRightUp] == currentPlayer) {
+									break;
 								}
-								break;
-							}
 
-							if (this.board[rowDiagonalRightUp][colDiagonalRightUp] == opponent) {
-								diagonalRightUpOpponent++;
+								if (this.board[rowDiagonalRightUp][colDiagonalRightUp] != opponent) {
+									if (diagonalRightUpOpponent > 0) {
+										validMoveLocations.add(new Location(rowDiagonalRightUp, colDiagonalRightUp));
+									}
+									break;
+								}
+
+								if (this.board[rowDiagonalRightUp][colDiagonalRightUp] == opponent) {
+									diagonalRightUpOpponent++;
+								}
+							} else {
+								break;
 							}
 						}
 					}
 
 					// Check diagonal right down.
-					if (x < 6 && y <= 8) {
+					if (x < 6 && y > 0) {
 						int rowDiagonalRightDown = x;
 						int colDiagonalRightDown = y;
 						int diagonalRightDownOpponent = 0;
@@ -148,22 +151,24 @@ class State {
 								rowDiagonalRightDown = rowDiagonalRightDown + 1;
 							}
 
-							if (this.board[rowDiagonalRightDown][colDiagonalRightDown] == currentPlayer) {
-								break;
-							}
-
-							if (this.board[rowDiagonalRightDown][colDiagonalRightDown] != opponent) {
-								if (this.board[rowDiagonalRightDown][colDiagonalRightDown] == 'N') {
+							if (rowDiagonalRightDown <= 6 && colDiagonalRightDown >= 0) {
+								if (this.board[rowDiagonalRightDown][colDiagonalRightDown] == currentPlayer) {
 									break;
 								}
-								if (diagonalRightDownOpponent > 0) {
-									validMoveLocations.add(new Location(rowDiagonalRightDown, colDiagonalRightDown));
-								}
-								break;
-							}
 
-							if (this.board[rowDiagonalRightDown][colDiagonalRightDown] == opponent) {
-								diagonalRightDownOpponent++;
+								if (this.board[rowDiagonalRightDown][colDiagonalRightDown] != opponent) {
+									if (this.board[rowDiagonalRightDown][colDiagonalRightDown] == 'N') {
+										break;
+									}
+									if (diagonalRightDownOpponent > 0) {
+										validMoveLocations.add(new Location(rowDiagonalRightDown, colDiagonalRightDown));
+									}
+									break;
+								}
+
+								if (this.board[rowDiagonalRightDown][colDiagonalRightDown] == opponent) {
+									diagonalRightDownOpponent++;
+								}
 							}
 						}
 					}					
@@ -174,7 +179,7 @@ class State {
 						int colDiagonalLeftUp = y;
 						int diagonalLeftUpOpponent = 0;
 
-						while (rowDiagonalLeftUp >= 0 && colDiagonalLeftUp >= 1) {
+						while (rowDiagonalLeftUp >= 0 && colDiagonalLeftUp >= 0) {
 							if (colDiagonalLeftUp % 2 == 0) {
 								rowDiagonalLeftUp = rowDiagonalLeftUp - 1;
 								colDiagonalLeftUp = colDiagonalLeftUp - 1;
@@ -182,19 +187,21 @@ class State {
 								colDiagonalLeftUp = colDiagonalLeftUp - 1;
 							}
 
-							if (this.board[rowDiagonalLeftUp][colDiagonalLeftUp] == currentPlayer) {
-								break;
-							}
-
-							if (this.board[rowDiagonalLeftUp][colDiagonalLeftUp] != opponent) {
-								if (diagonalLeftUpOpponent > 0) {
-									validMoveLocations.add(new Location(rowDiagonalLeftUp, colDiagonalLeftUp));
+							if (rowDiagonalLeftUp >= 0 && colDiagonalLeftUp >= 0) {
+								if (this.board[rowDiagonalLeftUp][colDiagonalLeftUp] == currentPlayer) {
+									break;
 								}
-								break;
-							}
 
-							if (this.board[rowDiagonalLeftUp][colDiagonalLeftUp] == opponent) {
-								diagonalLeftUpOpponent++;
+								if (this.board[rowDiagonalLeftUp][colDiagonalLeftUp] != opponent) {
+									if (diagonalLeftUpOpponent > 0) {
+										validMoveLocations.add(new Location(rowDiagonalLeftUp, colDiagonalLeftUp));
+									}
+									break;
+								}
+
+								if (this.board[rowDiagonalLeftUp][colDiagonalLeftUp] == opponent) {
+									diagonalLeftUpOpponent++;
+								}
 							}
 						}
 					}
@@ -205,7 +212,7 @@ class State {
 						int colDiagonalLeftDown = y;
 						int diagonalLeftDownOpponent = 0;
 
-						while (rowDiagonalLeftDown <= 6 && colDiagonalLeftDown <= 7) {
+						while (rowDiagonalLeftDown <= 6 && colDiagonalLeftDown <= 8) {
 							if (colDiagonalLeftDown % 2 == 0) {
 								colDiagonalLeftDown = colDiagonalLeftDown + 1;
 							} else {
@@ -213,23 +220,25 @@ class State {
 								rowDiagonalLeftDown = rowDiagonalLeftDown + 1;
 							}
 
-							if (this.board[rowDiagonalLeftDown][colDiagonalLeftDown] == currentPlayer) {
-								break;
-							}
-
-							if (this.board[rowDiagonalLeftDown][colDiagonalLeftDown] != opponent) {
-								if (this.board[rowDiagonalLeftDown][colDiagonalLeftDown] == 'N') {
+							if (rowDiagonalLeftDown <= 6 && colDiagonalLeftDown <= 8) {
+								if (this.board[rowDiagonalLeftDown][colDiagonalLeftDown] == currentPlayer) {
 									break;
 								}
 
-								if (diagonalLeftDownOpponent > 0) {
-									validMoveLocations.add(new Location(rowDiagonalLeftDown, colDiagonalLeftDown));
-								}
-								break;
-							}
+								if (this.board[rowDiagonalLeftDown][colDiagonalLeftDown] != opponent) {
+									if (this.board[rowDiagonalLeftDown][colDiagonalLeftDown] == 'N') {
+										break;
+									}
 
-							if (this.board[rowDiagonalLeftDown][colDiagonalLeftDown] == opponent) {
-								diagonalLeftDownOpponent++;
+									if (diagonalLeftDownOpponent > 0) {
+										validMoveLocations.add(new Location(rowDiagonalLeftDown, colDiagonalLeftDown));
+									}
+									break;
+								}
+
+								if (this.board[rowDiagonalLeftDown][colDiagonalLeftDown] == opponent) {
+									diagonalLeftDownOpponent++;
+								}
 							}
 						}	
 					}
@@ -291,9 +300,9 @@ public class Hexed {
 																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
 																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
 																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-																	 {' ', ' ', ' ', 'R', ' ', ' ', ' ', ' ', ' '},
-																	 {' ', ' ', ' ', ' ', 'G', 'G', ' ', ' ', ' '},
-																	 {' ', 'N', ' ', 'N', ' ', 'N', 'G', 'N', ' '}};
+																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+																	 {' ', 'N', ' ', 'N', ' ', 'N', ' ', 'N', ' '}};
 
 		State initialState = new State(board);
 
