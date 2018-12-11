@@ -218,6 +218,10 @@ class State {
 							}
 
 							if (this.board[rowDiagonalLeftDown][colDiagonalLeftDown] != opponent) {
+								if (this.board[rowDiagonalLeftDown][colDiagonalLeftDown] == 'N') {
+									break;
+								}
+
 								if (diagonalLeftDownOpponent > 0) {
 									validMoveLocations.add(new Location(rowDiagonalLeftDown, colDiagonalLeftDown));
 								}
@@ -283,13 +287,13 @@ public class Hexed {
 	}
 
 	public static void main(String[] args) {
-		char[][] board = new char[][] {{' ', ' ', ' ', ' ', ' ', ' ', 'R', 'G', ' '},
-																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'G'},
+		char[][] board = new char[][] {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
 																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
 																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
 																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-																	 {' ', 'N', ' ', 'N', ' ', 'N', ' ', 'N', ' '}};
+																	 {' ', ' ', ' ', 'R', ' ', ' ', ' ', ' ', ' '},
+																	 {' ', ' ', ' ', ' ', 'G', 'G', ' ', ' ', ' '},
+																	 {' ', 'N', ' ', 'N', ' ', 'N', 'G', 'N', ' '}};
 
 		State initialState = new State(board);
 
