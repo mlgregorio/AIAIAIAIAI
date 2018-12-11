@@ -66,7 +66,7 @@ class State {
 
 							if (this.board[rowVerticalUp][y] == opponent) {
 								verticalUpOpponent++;
-							}
+							} 
 
 							rowVerticalUp--;
 						}
@@ -84,6 +84,10 @@ class State {
 							}
 
 							if (this.board[rowVerticalDown][y] != opponent) {
+								if (this.board[rowVerticalDown][y] == 'N') {
+									break;
+								}
+								
 								if (verticalDownOpponent > 0) {
 									validMoveLocations.add(new Location(rowVerticalDown, y));
 								}
@@ -96,8 +100,7 @@ class State {
 
 							rowVerticalDown++;
 						}
-					}
-
+					}					
 
 
 					// Check diagonal right up.
@@ -106,7 +109,7 @@ class State {
 						int colDiagonalRightUp = y;
 						int diagonalRightUpOpponent = 0;
 
-						while (colDiagonalRightUp <= 8 && rowDiagonalRightUp >= 0) {
+						while (colDiagonalRightUp <= 7 && rowDiagonalRightUp >= 0) {
 							if (colDiagonalRightUp % 2 == 0) {
 								rowDiagonalRightUp = rowDiagonalRightUp - 1;
 								colDiagonalRightUp = colDiagonalRightUp + 1;
@@ -132,7 +135,7 @@ class State {
 					}
 
 					// Check diagonal right down.
-					if (x < 6 && y < 8) {
+					if (x < 6 && y <= 8) {
 						int rowDiagonalRightDown = x;
 						int colDiagonalRightDown = y;
 						int diagonalRightDownOpponent = 0;
@@ -150,6 +153,9 @@ class State {
 							}
 
 							if (this.board[rowDiagonalRightDown][colDiagonalRightDown] != opponent) {
+								if (this.board[rowDiagonalRightDown][colDiagonalRightDown] == 'N') {
+									break;
+								}
 								if (diagonalRightDownOpponent > 0) {
 									validMoveLocations.add(new Location(rowDiagonalRightDown, colDiagonalRightDown));
 								}
@@ -160,7 +166,7 @@ class State {
 								diagonalRightDownOpponent++;
 							}
 						}
-					}
+					}					
 
 					// Check diagonal left up.
 					if (x > 0 && y > 0) {
@@ -168,7 +174,7 @@ class State {
 						int colDiagonalLeftUp = y;
 						int diagonalLeftUpOpponent = 0;
 
-						while (rowDiagonalLeftUp >= 0 && colDiagonalLeftUp >= 0) {
+						while (rowDiagonalLeftUp >= 0 && colDiagonalLeftUp >= 1) {
 							if (colDiagonalLeftUp % 2 == 0) {
 								rowDiagonalLeftUp = rowDiagonalLeftUp - 1;
 								colDiagonalLeftUp = colDiagonalLeftUp - 1;
@@ -199,7 +205,7 @@ class State {
 						int colDiagonalLeftDown = y;
 						int diagonalLeftDownOpponent = 0;
 
-						while (rowDiagonalLeftDown <= 6 && colDiagonalLeftDown <= 8) {
+						while (rowDiagonalLeftDown <= 6 && colDiagonalLeftDown <= 7) {
 							if (colDiagonalLeftDown % 2 == 0) {
 								colDiagonalLeftDown = colDiagonalLeftDown + 1;
 							} else {
@@ -221,7 +227,7 @@ class State {
 							if (this.board[rowDiagonalLeftDown][colDiagonalLeftDown] == opponent) {
 								diagonalLeftDownOpponent++;
 							}
-						}
+						}	
 					}
 				}
 			}
@@ -277,12 +283,12 @@ public class Hexed {
 	}
 
 	public static void main(String[] args) {
-		char[][] board = new char[][] {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+		char[][] board = new char[][] {{' ', ' ', ' ', ' ', ' ', ' ', 'R', 'G', ' '},
 																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'G'},
-																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', 'G', 'G'},
-																	 {' ', ' ', 'G', 'G', ' ', 'G', 'G', ' ', ' '},
-																	 {' ', ' ', ' ', 'G', 'R', 'G', ' ', ' ', ' '},
-																	 {' ', ' ', ' ', 'G', ' ', ' ', 'G', 'G', ' '},
+																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
 																	 {' ', 'N', ' ', 'N', ' ', 'N', ' ', 'N', ' '}};
 
 		State initialState = new State(board);
@@ -291,14 +297,14 @@ public class Hexed {
 		// initializeBoard(4, 4, initialState.getBoard());
 		printBoard(initialState.getBoard());
 		// printChar2DArray(initialState.getBoard());
-
+		
 		ArrayList<Location> validMoves = initialState.checkValidMoves('R', 'G');
 
 		System.out.println("");
 		for (int x = 0; x < validMoves.size(); x++) {
 			System.out.println(validMoves.get(x).getRow() + ", " + validMoves.get(x).getColumn());
 		}
-	}
+	} 
 }
 
 //      0 1 2 3 4 5 6 7 8
