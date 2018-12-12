@@ -500,14 +500,19 @@ public class Hexed {
 					printValidMoves(playerTwo);
 
 					int moveIndex = 0;
+					boolean isValid = false;
 
-					System.out.print("Enter move number: ");
-					moveIndex = kbd.nextInt();
+					do {
+						System.out.print("Enter move number: ");
+						moveIndex = kbd.nextInt();
 
-					// while (moveIndex >= 0 && moveIndex <= playerTwo.size()) {
-					// 	System.out.print("Please enter move number (0 - " + playerTwo.size() + "): ");
-					// 	moveIndex = kbd.nextInt();
-					// }
+						if (moveIndex >= 0 && moveIndex <= (playerTwo.size() - 1)) {
+							isValid = true;
+						}
+
+					} while (isValid == false);
+					
+					System.out.println("Move number: " + moveIndex);
 
 					if (checkMoveHaveDuplicate(playerTwo.get(moveIndex), playerTwo).size() > 1) {
 						for (int z = 0; z < checkMoveHaveDuplicate(playerTwo.get(moveIndex), playerTwo).size(); z++) {
@@ -543,9 +548,9 @@ public class Hexed {
 // 1 -- 1 0 1 0 1 0 1 0 1
 // 0 -- 0 N 0 N 0 N 0 N 0
 
-// |6, 0|   |6|   |6|   |6|   |6|
+// |6|   |6|   |6|   |6|   |6|
 //    |5|   |5|   |5|   |5|
-// |5, 0|   |5|   |5|   |5|   |5|
+// |5|   |5|   |5|   |5|   |5|
 //    |4|   |4|   |4|   |4|
 // |4|   |4|   |4|   |4|   |4|
 //    |3|   |3|   |3|   |3|
