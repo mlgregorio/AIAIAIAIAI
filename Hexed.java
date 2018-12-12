@@ -1,12 +1,14 @@
 import java.util.*;
 
-class Location {
+class ValidMove {
 	private int row;
 	private int column;
+	private String moveDirection;
 
-	public Location(int row, int column) {
+	public ValidMove(int row, int column, String moveDirection) {
 		this.row    = row;
 		this.column = column;
+		this.moveDirection = moveDirection;
 	}
 
 	public void setRow(int newRow) {
@@ -17,12 +19,20 @@ class Location {
 		this.column = newColumn;
 	}
 
+	public void setMoveDirection(String newMoveDirection) {
+		this.moveDirection = newMoveDirection;
+	}
+
 	public int getRow() {
 		return row;
 	}
 
 	public int getColumn() {
 		return column;
+	}
+
+	public String getMoveDirection() {
+		return moveDirection;
 	}
 }
 
@@ -41,8 +51,8 @@ class State {
 		return board;
 	}
 
-	public ArrayList<Location> checkValidMoves(char currentPlayer, char opponent) {
-		ArrayList<Location> validMoveLocations = new ArrayList<>();
+	public ArrayList<ValidMove> checkValidMoves(char currentPlayer, char opponent) {
+		ArrayList<ValidMove> validMoveLocations = new ArrayList<>();
 		for (int x = 0; x < this.board.length; x++) {
 			for (int y = 0; y < this.board[x].length; y++) {
 				if (this.board[x][y] == currentPlayer) {
@@ -59,7 +69,7 @@ class State {
 
 							if (this.board[rowVerticalUp][y] != opponent) {
 								if (verticalUpOpponent > 0) {
-									validMoveLocations.add(new Location(rowVerticalUp, y));
+									validMoveLocations.add(new ValidMove(rowVerticalUp, y, "verticalUp"));
 								}
 								break;
 							}
@@ -71,7 +81,6 @@ class State {
 							rowVerticalUp--;
 						}
 					}
-
 
 					// Check vertical down.
 					if (x < 6) {
@@ -89,7 +98,7 @@ class State {
 								}
 								
 								if (verticalDownOpponent > 0) {
-									validMoveLocations.add(new Location(rowVerticalDown, y));
+									validMoveLocations.add(new ValidMove(rowVerticalDown, y, "verticalDown"));
 								}
 								break;
 							}
@@ -123,7 +132,7 @@ class State {
 
 								if (this.board[rowDiagonalRightUp][colDiagonalRightUp] != opponent) {
 									if (diagonalRightUpOpponent > 0) {
-										validMoveLocations.add(new Location(rowDiagonalRightUp, colDiagonalRightUp));
+										validMoveLocations.add(new ValidMove(rowDiagonalRightUp, colDiagonalRightUp, "diagonalRightUp"));
 									}
 									break;
 								}
@@ -161,7 +170,7 @@ class State {
 										break;
 									}
 									if (diagonalRightDownOpponent > 0) {
-										validMoveLocations.add(new Location(rowDiagonalRightDown, colDiagonalRightDown));
+										validMoveLocations.add(new ValidMove(rowDiagonalRightDown, colDiagonalRightDown, "diagonalRightDown"));
 									}
 									break;
 								}
@@ -194,7 +203,7 @@ class State {
 
 								if (this.board[rowDiagonalLeftUp][colDiagonalLeftUp] != opponent) {
 									if (diagonalLeftUpOpponent > 0) {
-										validMoveLocations.add(new Location(rowDiagonalLeftUp, colDiagonalLeftUp));
+										validMoveLocations.add(new ValidMove(rowDiagonalLeftUp, colDiagonalLeftUp, "diagonalLeftUp"));
 									}
 									break;
 								}
@@ -231,7 +240,7 @@ class State {
 									}
 
 									if (diagonalLeftDownOpponent > 0) {
-										validMoveLocations.add(new Location(rowDiagonalLeftDown, colDiagonalLeftDown));
+										validMoveLocations.add(new ValidMove(rowDiagonalLeftDown, colDiagonalLeftDown, "diagonalLeftDown"));
 									}
 									break;
 								}
@@ -248,9 +257,113 @@ class State {
 
 		return validMoveLocations;
 	}
+
+	public char[][] applyMove(char currentPlayer, ValidMove move) {
+		char[][] newBoard = this.board;
+
+		int x = move.getRow();
+		int y = move.getColumn();
+
+		switch (move.getMoveDirection()) {
+			case "verticalUp":
+				newBoard[x][y] = currentPlayer;
+				x = x + 1;
+				while (newBoard[x][y] != currentPlayer) {
+					newBoard[x][y] = currentPlayer;
+					x++;
+				}
+				break;
+			case "verticalDown":
+				newBoard[x][y] = currentPlayer;
+				x = x - 1;
+				while(newBoard[x][y] != currentPlayer) {
+					newBoard[x][y] = currentPlayer;
+					x--;
+				}
+				break;
+			case "diagonalRightUp":
+				newBoard[x][y] = currentPlayer;
+				while (x <= 6 && y >= 0) {
+					if (y % 2 == 0) {
+						y = y - 1;
+					} else {
+						y = y - 1;
+						x = x + 1;
+					}
+
+					if (newBoard[x][y] == currentPlayer) {
+						break;
+					}
+					newBoard[x][y] = currentPlayer;
+				}
+				break;
+			case "diagonalRightDown":
+				newBoard[x][y] = currentPlayer;
+				while (y <= 8 && x >= 0) {
+					if (y % 2 == 0) {
+						x = x - 1;
+						y = y + 1;
+					} else {
+						y = y + 1;
+					}
+
+					if (newBoard[x][y] == currentPlayer) {
+						break;
+					}
+					newBoard[x][y] = currentPlayer;
+				}
+				break;
+			case "diagonalLeftUp":
+				newBoard[x][y] = currentPlayer;
+				while (x <= 6 && y <= 8) {
+					if (y % 2 == 0) {
+						y = y + 1;
+					} else {
+						y = y + 1;
+						x = x + 1;
+					}
+
+					if (newBoard[x][y] == currentPlayer) {
+						break;
+					}
+					newBoard[x][y] = currentPlayer;
+				}
+				break;
+			case "diagonalLeftDown":
+				newBoard[x][y] = currentPlayer;
+				while (x >= 0 && y >= 0) {
+					if (y % 2 == 0) {
+						x = x - 1;
+						y = y - 1;
+					} else {
+						y = y - 1;
+					}
+
+					if (newBoard[x][y] == currentPlayer) {
+						break;
+					}
+					newBoard[x][y] = currentPlayer;
+				}
+				break;
+		}
+
+		return newBoard;
+	}
 }
 
 public class Hexed {
+	private static Scanner kbd = new Scanner(System.in);
+
+	public static ValidMove randomizeMove(ArrayList<ValidMove> validMoves) {
+		int index = (int) (Math.random() * (validMoves.size() - 1));
+		return validMoves.get(index);
+	}
+
+	public static void printValidMoves(ArrayList<ValidMove> validMoves) {
+		for (int i = 0; i < validMoves.size(); i++) {
+			System.out.println(i + " -> (Row: " + (6 - validMoves.get(i).getRow()) + ", Column: " + validMoves.get(i).getColumn() + ")");
+		}
+	}
 
 	public static void printChar2DArray(char[][] b) {
 		for (int x = 0; x < b.length; x++) {
@@ -295,6 +408,18 @@ public class Hexed {
 		return board;
 	}
 
+	public static ArrayList<ValidMove> checkMoveHaveDuplicate(ValidMove currentMove, ArrayList<ValidMove> validMoves) {
+		ArrayList<ValidMove> moves = new ArrayList<>();
+
+		for (int i = 0; i < validMoves.size(); i++)  {
+			if (validMoves.get(i).getRow() == currentMove.getRow() && validMoves.get(i).getColumn() == currentMove.getColumn()) {
+				moves.add(validMoves.get(i));
+			}
+		}
+
+		return moves;
+	}
+
 	public static void main(String[] args) {
 		char[][] board = new char[][] {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
 																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -306,17 +431,105 @@ public class Hexed {
 
 		State initialState = new State(board);
 
-		// initializeBoard(row, column, char[][]);
-		// initializeBoard(4, 4, initialState.getBoard());
-		printBoard(initialState.getBoard());
-		// printChar2DArray(initialState.getBoard());
-		
-		ArrayList<Location> validMoves = initialState.checkValidMoves('R', 'G');
+		// ArrayList<ValidMove> validMoves = initialState.checkValidMoves('G', 'R');
+		// printBoard(initialState.getBoard());
+		// printValidMoves(validMoves);
 
-		System.out.println("");
-		for (int x = 0; x < validMoves.size(); x++) {
-			System.out.println(validMoves.get(x).getRow() + ", " + validMoves.get(x).getColumn());
+		// System.out.println("Valid moves count: " + checkMoveHaveDuplicate(validMoves.get(0), validMoves).size());
+
+		// if (checkMoveHaveDuplicate(validMoves.get(0), validMoves).size() > 1) {
+		// 	for (int z = 0; z < checkMoveHaveDuplicate(validMoves.get(0), validMoves).size(); z++) {
+		// 		initialState.applyMove('G', checkMoveHaveDuplicate(validMoves.get(0), validMoves).get(z));
+		// 	}
+		// }
+
+		// printBoard(initialState.getBoard());
+
+		System.out.println("Enter initial state:");
+		System.out.print("Row: ");
+		int initialRow = kbd.nextInt();
+
+		System.out.print("Column: ");
+		int initialCol = kbd.nextInt(); 
+
+		initializeBoard(initialRow, initialCol, board);
+		System.out.println("--------- Misery  Hexed ---------");
+		printBoard(initialState.getBoard());
+
+		System.out.println("Do you want to make the first move?");
+		System.out.println("1 -> Yes or 2 -> No");
+		int ans = kbd.nextInt();
+
+		int playerTurn = 0;
+
+		if (ans == 1) {
+			playerTurn = 1;
+		} else {
+			playerTurn = 0;
 		}
+		
+		ArrayList<ValidMove> playerOne = new ArrayList<>();
+		ArrayList<ValidMove> playerTwo = new ArrayList<>();
+
+		do {
+			playerOne = initialState.checkValidMoves('R', 'G');
+			playerTwo = initialState.checkValidMoves('G', 'R');
+			
+			if (playerTurn % 2 == 0) {
+				if (playerOne.size() > 0) {
+					playerOne = initialState.checkValidMoves('R', 'G');
+					printValidMoves(playerOne);
+					ValidMove playerOneMove = randomizeMove(playerOne);
+					System.out.println("Move Location: (Row: " + (6 - playerOneMove.getRow()) + ", Column: " + playerOneMove.getColumn() + ")");
+
+					if (checkMoveHaveDuplicate(playerOneMove, playerOne).size() > 1) {
+						for (int z = 0; z < checkMoveHaveDuplicate(playerOneMove, playerOne).size(); z++) {
+							initialState.applyMove('R', checkMoveHaveDuplicate(playerOneMove, playerOne).get(z));
+						}
+
+						printBoard(initialState.getBoard());
+					} else {
+						printBoard(initialState.applyMove('R', playerOneMove));
+					}
+				} else {
+					System.out.println("Player one Hexed!!!\n");
+				}
+			} else {
+				if (playerTwo.size() > 0) {
+					playerTwo = initialState.checkValidMoves('G', 'R');
+					printValidMoves(playerTwo);
+
+					int moveIndex = 0;
+
+					System.out.print("Enter move number: ");
+					moveIndex = kbd.nextInt();
+
+					// while (moveIndex >= 0 && moveIndex <= playerTwo.size()) {
+					// 	System.out.print("Please enter move number (0 - " + playerTwo.size() + "): ");
+					// 	moveIndex = kbd.nextInt();
+					// }
+
+					if (checkMoveHaveDuplicate(playerTwo.get(moveIndex), playerTwo).size() > 1) {
+						for (int z = 0; z < checkMoveHaveDuplicate(playerTwo.get(moveIndex), playerTwo).size(); z++) {
+							initialState.applyMove('G', checkMoveHaveDuplicate(playerTwo.get(moveIndex), playerTwo).get(z));
+						}
+
+						printBoard(initialState.getBoard());
+					} else {
+						printBoard(initialState.applyMove('G', playerTwo.get(moveIndex)));
+					}
+				} else {
+					System.out.println("Player two Hexed!!!\n");
+				}
+			}
+
+			playerOne = initialState.checkValidMoves('R', 'G');
+			playerTwo = initialState.checkValidMoves('G', 'R');
+
+			System.out.println("Player one available moves: " + playerOne.size());
+			System.out.println("Player two available moves: " + playerTwo.size());
+			playerTurn++;
+		} while (playerOne.size() != 0 || playerTwo.size() != 0);
 	} 
 }
 
@@ -330,9 +543,9 @@ public class Hexed {
 // 1 -- 1 0 1 0 1 0 1 0 1
 // 0 -- 0 N 0 N 0 N 0 N 0
 
-// |6|   |6|   |6|   |6|   |6|
+// |6, 0|   |6|   |6|   |6|   |6|
 //    |5|   |5|   |5|   |5|
-// |5|   |5|   |5|   |5|   |5|
+// |5, 0|   |5|   |5|   |5|   |5|
 //    |4|   |4|   |4|   |4|
 // |4|   |4|   |4|   |4|   |4|
 //    |3|   |3|   |3|   |3|
