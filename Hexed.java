@@ -87,12 +87,12 @@ class State {
 
 							if (this.board[rowVerticalUp][y] == opponent) {
 								verticalUpOpponent++;
-							} 
+							}
 
 							rowVerticalUp--;
 						}
 					}
-					
+
 					/**
 					 * Code Author: Pocaan, Dominic
 					 * Function:
@@ -112,7 +112,7 @@ class State {
 								if (this.board[rowVerticalDown][y] == 'N') {
 									break;
 								}
-								
+
 								if (verticalDownOpponent > 0) {
 									validMoveLocations.add(new ValidMove(rowVerticalDown, y, "verticalDown"));
 								}
@@ -125,8 +125,12 @@ class State {
 
 							rowVerticalDown++;
 						}
-					}					
-
+					}
+					/**
+					 * Code Author: Gregorio, Marc Lawrence
+					 * Function:
+					 * Check for valid moves in the board upward diagonal right .
+					 */
 					// Check diagonal right up.
 					if (x > 0 && y < 8) {
 						int rowDiagonalRightUp = x;
@@ -162,6 +166,11 @@ class State {
 						}
 					}
 
+					/**
+					 * Code Author: Gregorio, Marc Lawrence
+					 * Function:
+					 * Check for valid moves in the board downward diagonal right .
+					 */
 					// Check diagonal right down.
 					if (x < 6 && y > 0) {
 						int rowDiagonalRightDown = x;
@@ -196,8 +205,8 @@ class State {
 								}
 							}
 						}
-					}					
-					
+					}
+
 					/**
 					 * Code Author: Pocaan, Dominic
 					 * Function:
@@ -236,7 +245,7 @@ class State {
 							}
 						}
 					}
-					
+
 					/**
 					 * Code Author: Pocaan, Dominic
 					 * Function:
@@ -277,7 +286,7 @@ class State {
 									diagonalLeftDownOpponent++;
 								}
 							}
-						}	
+						}
 					}
 				}
 			}
@@ -285,7 +294,7 @@ class State {
 
 		return validMoveLocations;
 	}
-	
+
 	/**
 	 * Code Author: Pocaan, Dominic
 	 * Function:
@@ -497,7 +506,7 @@ public class Hexed {
 		int initialRow = kbd.nextInt();
 
 		System.out.print("Column: ");
-		int initialCol = kbd.nextInt(); 
+		int initialCol = kbd.nextInt();
 
 		initializeBoard(initialRow, initialCol, board);
 		System.out.println("--------- Misery  Hexed ---------");
@@ -514,7 +523,7 @@ public class Hexed {
 		} else {
 			playerTurn = 0;
 		}
-		
+
 
 		/**
 		 * Code Author: Pocaan, Dominic
@@ -527,7 +536,7 @@ public class Hexed {
 		do {
 			playerOne = initialState.checkValidMoves('R', 'G');
 			playerTwo = initialState.checkValidMoves('G', 'R');
-			
+
 			if (playerTurn % 2 == 0) {
 				if (playerOne.size() > 0) {
 					playerOne = initialState.checkValidMoves('R', 'G');
@@ -564,7 +573,7 @@ public class Hexed {
 						}
 
 					} while (isValid == false);
-					
+
 					System.out.println("Move number: " + moveIndex);
 
 					if (checkMoveHaveDuplicate(playerTwo.get(moveIndex), playerTwo).size() > 1) {
@@ -602,7 +611,7 @@ public class Hexed {
 		} else {
 			System.out.println("Player one win!!!");
 		}
-	} 
+	}
 }
 
 //      0 1 2 3 4 5 6 7 8
