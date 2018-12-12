@@ -420,6 +420,20 @@ public class Hexed {
 		return moves;
 	}
 
+	public static int countPlayerTiles(char player, char[][] board) {
+		int counter = 0;
+
+		for (int x = 0; x < board.length; x++) {
+			for (int y = 0; y < board[x].length; y++) {
+				if (board[x][y] == player) {
+					counter++;
+				}
+			}
+		}
+
+		return counter;
+	}
+
 	public static void main(String[] args) {
 		char[][] board = new char[][] {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
 																	 {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -533,8 +547,22 @@ public class Hexed {
 
 			System.out.println("Player one available moves: " + playerOne.size());
 			System.out.println("Player two available moves: " + playerTwo.size());
+
+			System.out.println();
+
+			System.out.println("Player one total tiles: " + countPlayerTiles('R', initialState.getBoard()));
+			System.out.println("Player two total tiles: " + countPlayerTiles('G', initialState.getBoard()));
 			playerTurn++;
 		} while (playerOne.size() != 0 || playerTwo.size() != 0);
+
+		int playerOneScore = countPlayerTiles('R', initialState.getBoard());
+		int playerTwoScore = countPlayerTiles('G', initialState.getBoard());
+
+		if (playerOneScore > playerTwoScore) {
+			System.out.println("Player two win!!!");
+		} else {
+			System.out.println("Player one win!!!");
+		}
 	} 
 }
 
