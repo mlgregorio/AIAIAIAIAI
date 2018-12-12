@@ -1,3 +1,9 @@
+/**
+ * Program Authors:
+ * Gregorio, Marc Lawrence
+ * Mangahas, Kyle Chirstian
+ * Pocaan, Dominic
+ */
 import java.util.*;
 
 class ValidMove {
@@ -57,6 +63,11 @@ class State {
 			for (int y = 0; y < this.board[x].length; y++) {
 				if (this.board[x][y] == currentPlayer) {
 
+					/**
+					 * Code Author: Pocaan, Dominic
+					 * Function:
+					 * Check for valid moves in the board vertically upward.
+					 */
 					// Check vertiacal up.
 					if (x > 0) {
 						int rowVerticalUp = x - 1;
@@ -81,7 +92,12 @@ class State {
 							rowVerticalUp--;
 						}
 					}
-
+					
+					/**
+					 * Code Author: Pocaan, Dominic
+					 * Function:
+					 * Check for valid moves in the board vertically downward.
+					 */
 					// Check vertical down.
 					if (x < 6) {
 						int rowVerticalDown = x + 1;
@@ -181,7 +197,13 @@ class State {
 							}
 						}
 					}					
-
+					
+					/**
+					 * Code Author: Pocaan, Dominic
+					 * Function:
+					 * Check for valid moves in the board diagonally to
+					 * the direction of north west of the board.
+					 */
 					// Check diagonal left up.
 					if (x > 0 && y > 0) {
 						int rowDiagonalLeftUp = x;
@@ -214,7 +236,13 @@ class State {
 							}
 						}
 					}
-
+					
+					/**
+					 * Code Author: Pocaan, Dominic
+					 * Function:
+					 * Check for valid moves in the board diagonally to
+					 * the direction of south east of the board.
+					 */
 					// Check diagonal left down.
 					if (x < 6 && y < 8) {
 						int rowDiagonalLeftDown = x;
@@ -257,7 +285,12 @@ class State {
 
 		return validMoveLocations;
 	}
-
+	
+	/**
+	 * Code Author: Pocaan, Dominic
+	 * Function:
+	 * Apply the move to this board.
+	 */
 	public char[][] applyMove(char currentPlayer, ValidMove move) {
 		char[][] newBoard = this.board;
 
@@ -482,6 +515,12 @@ public class Hexed {
 			playerTurn = 0;
 		}
 		
+
+		/**
+		 * Code Author: Pocaan, Dominic
+		 * Function:
+		 * Apply the move to this board.
+		 */
 		ArrayList<ValidMove> playerOne = new ArrayList<>();
 		ArrayList<ValidMove> playerTwo = new ArrayList<>();
 
